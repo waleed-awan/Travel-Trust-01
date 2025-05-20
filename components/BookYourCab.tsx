@@ -6,7 +6,7 @@ import { FaEnvelope, FaPhone } from "react-icons/fa";
 export default function RequestQuote() {
   return (
     <section
-      id="quote"
+      id="contact"
       className="relative bg-yellow-500 py-16 px-6 text-center overflow-hidden"
     >
       {/* Top Animated Checkered Border */}
