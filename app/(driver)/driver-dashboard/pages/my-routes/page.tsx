@@ -1,7 +1,6 @@
 "use client"
 
-import type React from "react"
-
+import { useParams } from "next/navigation"
 import { useEffect, useState, useCallback } from "react"
 import axios from "axios"
 import { MapPin, Clock, DollarSign, Plus, Trash2, Save } from 'lucide-react'
@@ -11,7 +10,12 @@ import { Card, CardContent, CardHeader, CardTitle, CardFooter } from "@/componen
 import { Alert, AlertDescription } from "@/components/ui/alert"
 import { ThemeProvider } from "../../components/theme-provider"
 
-const CreateRoute = ({ routeId }: { routeId?: string }) => {
+// This is now a client component page that gets routeId from params
+export default function CreateRoute() {
+  // Get routeId from URL params
+  const params = useParams()
+  const routeId = params?.routeId !== "create" ? params?.routeId as string : undefined
+
   const [routeData, setRouteData] = useState({
     name: "",
     startPoint: "",
@@ -183,10 +187,8 @@ const CreateRoute = ({ routeId }: { routeId?: string }) => {
 
   return (
     <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
-      <div className="min-h-screen  ">
-       
-
-        <Card className=" mx-auto shadow-xl">
+      <div className="min-h-screen">
+        <Card className="mx-auto shadow-xl">
           <CardHeader>
             <div className="flex justify-between items-center">
               <CardTitle className="text-2xl font-semibold">{routeId ? "Update Route" : "Create New Route"}</CardTitle>
@@ -408,5 +410,3 @@ const CreateRoute = ({ routeId }: { routeId?: string }) => {
     </ThemeProvider>
   )
 }
-
-export default CreateRoute

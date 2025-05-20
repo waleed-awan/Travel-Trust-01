@@ -1,27 +1,27 @@
-"use client"
-import { useState, useEffect } from "react"
-import type React from "react"
+"use client";
+import { useState, useEffect } from "react";
+import type React from "react";
 
-import { useRouter } from "next/navigation"
-import axios from "axios"
-import { ArrowLeft } from "lucide-react"
+import { useRouter } from "next/navigation";
+import axios from "axios";
+import { ArrowLeft } from "lucide-react";
 
 interface Stop {
-  _id: string
-  location: string
+  _id: string;
+  location: string;
 }
 
 interface Route {
-  _id: string
-  name: string
-  startPoint: string
-  endPoint: string
-  stops: Stop[]
-  driver: string
+  _id: string;
+  name: string;
+  startPoint: string;
+  endPoint: string;
+  stops: Stop[];
+  driver: string;
 }
 
 export function BookRide() {
-  const [routes, setRoutes] = useState<Route[]>([])
+  const [routes, setRoutes] = useState<Route[]>([]);
   const [formData, setFormData] = useState({
     pickupLocation: "",
     dropoffLocation: "",
@@ -31,34 +31,36 @@ export function BookRide() {
     route: "",
     pickupDateTime: "",
     duration: "One-Time",
-  })
-  const [loading, setLoading] = useState(false)
-  const [message, setMessage] = useState("")
-  const router = useRouter()
+  });
+  const [loading, setLoading] = useState(false);
+  const [message, setMessage] = useState("");
+  const router = useRouter();
 
   useEffect(() => {
-    const userId = localStorage.getItem("userId")
+    const userId = localStorage.getItem("userId");
 
     if (!userId) {
-      router.push("/pages/Sign-In")
-      return
+      router.push("/pages/Sign-In");
+      return;
     }
 
-    setFormData((prev) => ({ ...prev, passenger: userId }))
+    setFormData((prev) => ({ ...prev, passenger: userId }));
     const fetchRoutes = async () => {
       try {
-        const response = await axios.get("http://localhost:5090/api/v2/get-all/routes")
+        const response = await axios.get(
+          "http://localhost:5090/api/v2/get-all/routes"
+        );
         if (response.data.success) {
-          setRoutes(response.data.data)
+          setRoutes(response.data.data);
         }
       } catch (error) {
-        console.error("Error fetching routes:", error)
+        console.error("Error fetching routes:", error);
       }
-    }
-    fetchRoutes()
-  }, [router])
+    };
+    fetchRoutes();
+  }, [router]);
   const handleRouteChange = (routeId: string) => {
-    const selectedRoute = routes.find((route) => route._id === routeId)
+    const selectedRoute = routes.find((route) => route._id === routeId);
     if (selectedRoute) {
       setFormData((prev) => ({
         ...prev,
@@ -66,26 +68,29 @@ export function BookRide() {
         driver: selectedRoute.driver || "",
         pickupLocation: "",
         dropoffLocation: "",
-      }))
+      }));
     }
-  }
+  };
   const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault()
-    setLoading(true)
-    setMessage("")
+    e.preventDefault();
+    setLoading(true);
+    setMessage("");
 
     try {
-      const response = await axios.post("http://localhost:5090/api/v2/create-ride", formData)
+      const response = await axios.post(
+        "http://localhost:5090/api/v2/create-ride",
+        formData
+      );
       setMessage(
-        `Ride request has been sent successfully! Fare: ${response.data.ride.fare}RS <n /> Please! wait for the conformation email form your ride captain.`,
-      )
+        `Ride request has been sent successfully! Fare: ${response.data.ride.fare}RS <n /> Please! wait for the conformation email form your ride captain.`
+      );
     } catch (error) {
-      setMessage("Failed to book ride. Please try again.")
-      console.error("Error:", error)
+      setMessage("Failed to book ride. Please try again.");
+      console.error("Error:", error);
     }
 
-    setLoading(false)
-  }
+    setLoading(false);
+  };
   return (
     <div className="w-full mt-6 border max-w-6xl mx-auto p-6 bg-white rounded-xl shadow-2xl">
       <button
@@ -95,11 +100,18 @@ export function BookRide() {
         <ArrowLeft className="mr-1 h-5 w-5" />
         Back to Main Page
       </button>
-      <h2 className="text-3xl font-bold mb-8 text-center text-gray-800">Book Your Ride</h2>
-      <form onSubmit={handleSubmit} className="grid grid-cols-1 md:grid-cols-2 gap-6">
+      <h2 className="text-3xl font-bold mb-8 text-center text-gray-800">
+        Book Your Ride
+      </h2>
+      <form
+        onSubmit={handleSubmit}
+        className="grid grid-cols-1 md:grid-cols-2 gap-6"
+      >
         {/* Select Route */}
         <div className="space-y-2">
-          <label className="text-sm font-medium text-gray-700">Select Route</label>
+          <label className="text-sm font-medium text-gray-700">
+            Select Route
+          </label>
           <select
             className="w-full py-3 px-4 rounded-lg border"
             value={formData.route}
@@ -120,11 +132,14 @@ export function BookRide() {
             <label className="text-sm font-medium text-gray-700">{label}</label>
             <select
               className="w-full py-3 px-4 rounded-lg border"
-              value={idx === 0 ? formData.pickupLocation : formData.dropoffLocation}
+              value={
+                idx === 0 ? formData.pickupLocation : formData.dropoffLocation
+              }
               onChange={(e) =>
                 setFormData((prev) => ({
                   ...prev,
-                  [idx === 0 ? "pickupLocation" : "dropoffLocation"]: e.target.value,
+                  [idx === 0 ? "pickupLocation" : "dropoffLocation"]:
+                    e.target.value,
                 }))
               }
               disabled={!formData.route}
@@ -132,7 +147,9 @@ export function BookRide() {
               <option value="">Select {label}</option>
               {formData.route &&
                 (() => {
-                  const selectedRoute = routes.find((route) => route._id === formData.route)
+                  const selectedRoute = routes.find(
+                    (route) => route._id === formData.route
+                  );
                   return selectedRoute
                     ? idx === 0
                       ? [
@@ -155,7 +172,7 @@ export function BookRide() {
                             {selectedRoute.endPoint}
                           </option>,
                         ]
-                    : []
+                    : [];
                 })()}
             </select>
           </div>
@@ -163,7 +180,9 @@ export function BookRide() {
 
         {/* Pickup Date and Time */}
         <div className="space-y-2">
-          <label className="text-sm font-medium text-gray-700">Pickup Date & Time</label>
+          <label className="text-sm font-medium text-gray-700">
+            Pickup Date & Time
+          </label>
           <input
             type="datetime-local"
             className="w-full py-3 px-4 rounded-lg border"
@@ -226,7 +245,9 @@ export function BookRide() {
         <div className="mt-6 text-center">
           <div
             className={`p-4 rounded-lg inline-block ${
-              message.includes("successfully") ? "bg-green-100 text-green-700" : "bg-red-100 text-red-700"
+              message.includes("successfully")
+                ? "bg-green-100 text-green-700"
+                : "bg-red-100 text-red-700"
             }`}
           >
             {message.split("<n />").map((text, index) => (
@@ -247,5 +268,5 @@ export function BookRide() {
         </div>
       )}
     </div>
-  )
+  );
 }
