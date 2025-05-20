@@ -1,20 +1,21 @@
-"use client";
+"use client"
 
-import { useState, useEffect } from "react";
-import Link from "next/link";
-import { Button } from "./ui/button";
-import { Toaster, toast } from "react-hot-toast";
+import { useState, useEffect } from "react"
+import Link from "next/link"
+import { Button } from "./ui/button"
+import { Toaster, toast } from "react-hot-toast"
+import { Car } from "lucide-react"
 
 export function TopBar() {
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [isAuthenticated, setIsAuthenticated] = useState(false)
 
   // Check if user is logged in (from localStorage)
   useEffect(() => {
-    const userId = localStorage.getItem("userId");
+    const userId = localStorage.getItem("userId")
     if (userId) {
-      setIsAuthenticated(true);
+      setIsAuthenticated(true)
     }
-  }, []);
+  }, [])
 
   // Handle Logout with Confirmation
   const handleLogout = () => {
@@ -24,10 +25,10 @@ export function TopBar() {
         <div className="flex justify-end gap-2 mt-2">
           <button
             onClick={() => {
-              toast.dismiss(t.id);
-              localStorage.removeItem("userId");
-              setIsAuthenticated(false);
-              toast.success("Logged out successfully!");
+              toast.dismiss(t.id)
+              localStorage.removeItem("userId")
+              setIsAuthenticated(false)
+              toast.success("Logged out successfully!")
             }}
             className="px-3 py-1 bg-red-600 text-white rounded hover:bg-red-700"
           >
@@ -41,15 +42,21 @@ export function TopBar() {
           </button>
         </div>
       </div>
-    ));
-  };
+    ))
+  }
 
   return (
-    <div className="bg-gradient-to-r from-[#1a1a1a] to-[#2a2a2a] text-white py-2 md:py-3">
+    <div className="bg-gradient-to-r from-[#1a1a1a] to-[#2a2a2a] text-white py-3 md:py-4">
       <Toaster />
       <div className="container mx-auto px-4">
         <div className="flex justify-between items-center">
-          {/* Right Section: Buttons & Social Links */}
+          {/* Logo/Brand Name */}
+          <div className="flex items-center">
+            <Car className="h-5 w-5 text-[#FFA500] mr-2" />
+            <span className="font-bold text-lg">RideFast</span>
+          </div>
+
+          {/* Auth Buttons */}
           <div className="flex items-center space-x-4 md:space-x-6">
             <div className="flex space-x-3">
               {isAuthenticated ? (
@@ -92,5 +99,5 @@ export function TopBar() {
         </div>
       </div>
     </div>
-  );
+  )
 }
