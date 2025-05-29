@@ -127,7 +127,7 @@ const AboutSection = () => {
               Premium <span className="text-yellow-500">Taxi Service</span>
             </DialogTitle>
             <DialogDescription className="text-gray-600 mt-2">
-              Discover why we're the most trusted taxi service provider for over 30 years.
+              Discover why we&apos;re the most trusted taxi service provider for over 30 years.
             </DialogDescription>
           </DialogHeader>
 
@@ -205,7 +205,7 @@ const AboutSection = () => {
               <div>
                 <h3 className="font-medium">24/7 Availability</h3>
                 <p className="text-sm text-gray-500">
-                  Our services are available round the clock to ensure you're never stranded.
+                  Our services are available round the clock to ensure yo&apos;re never stranded.
                 </p>
               </div>
             </div>
